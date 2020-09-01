@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8087
   #压缩请求数据大小
   compression:
     enabled: true
