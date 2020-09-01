@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tk.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.tk.bean.Role">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="rolename" jdbcType="VARCHAR" property="rolename" />
+    <result column="type" jdbcType="BIT" property="type" />
+    <result column="level" jdbcType="BIT" property="level" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createperson" jdbcType="VARCHAR" property="createperson" />
+  </resultMap>
+  
+  <select id="findByRoleName" resultType="com.tk.bean.Role">
+  	select * from role where rolename = #{rolename}
+  </select>
+  
+  <select id="listPagingInfo" resultType="com.tk.vo.res.RoleResPageVo">
+  	select 
+  		rolename,
+  		createtime,
+  		createperson 
+  	from role where level != 2
+  	<if test="rolename!=null and rolename!=''">
+  		and rolename = #{rolename}
+  	</if>  	
+  </select>
+  
+  <select id="roleList" resultType="com.tk.vo.res.RoleResVo">
+  	select 
+  		id,
+  		rolename
+  	from role where level = 1	
+  </select>
+</mapper>

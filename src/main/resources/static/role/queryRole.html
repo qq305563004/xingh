@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>查看角色权限</title>
+<link rel="stylesheet" type="text/css"
+	href="http://unpkg.com/view-design/dist/styles/iview.css">
+<script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
+<script type="text/javascript"
+	src="http://unpkg.com/view-design/dist/iview.min.js"></script>
+
+<script src="../js/jquery.min.js"></script>
+
+<!-- 公共方法 -->
+<script src="../js/comm.js"></script>
+</head>
+<body>
+	<div id="app">
+		<Select v-model="roleId" style="width: 200px">
+			<Option v-for="item in roles" :value="item.id">{{
+				item.rolename }}</Option>
+		</Select>
+		<Tree :data="treeData" show-checkbox></Tree>
+		<Button type="primary" icon="ios-search" shape="circle"
+			@click="searchData">查询</Button>
+	</div>
+	<script type="text/javascript">
+	var App = new Vue({
+		el : '#app',
+		data : {
+			treeData: [],
+			roles: [],
+			roleId: 1
+		},
+		methods:{
+			searchData(){
+				console.log(App.roleId)
+				App.getTreeData();
+			},
+			getRoleData(){
+				$.post("/role/roleList",function(data){	
+					console.log(data.data);
+					App.roles = data.data;
+				});
+			},
+			getTreeData(){
+				$.ajax({
+				    method: "POST",
+				    url: "/role/getRole",
+				    contentType: 'application/json',
+				    data:JSON.stringify({"id": this.roleId}),
+				    success: function(data) {
+				    	App.treeData = treeDataFormat(data.data);
+				   }
+				});
+			}
+        },
+        created(){
+        	this.getTreeData();
+        	this.getRoleData();
+        }
+	})
+	</script>
+</body>
+</html>

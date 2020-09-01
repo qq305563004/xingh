@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<properties resource="mybatis/config.properties"/>
+	<context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+		<!-- 防范关键字 -->
+		<property name="autoDelimitKeywords" value="true"/>
+		<property name="beginningDelimiter" value="`"/>
+	    <property name="endingDelimiter" value="`"/>
+		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+			<!-- 这里要自定义mapper -->
+			<property name="mappers" value="com.tk.utils.MyMapper" />
+			<!-- caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true -->
+			<property name="caseSensitive" value="true" />
+		</plugin>
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<property name="javaFileEncoding" value="utf-8"/>
+		</commentGenerator>
+		<jdbcConnection driverClass="${jdbc.driverClassName}" connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}">
+			<property name="nullCatalogMeansCurrent" value="true" />
+		</jdbcConnection>
+		<javaModelGenerator targetPackage="${package.model}" targetProject="src/main/java" />
+		<sqlMapGenerator targetPackage="${package.xml}" targetProject="src/main/resources" />
+		<javaClientGenerator targetPackage="${package.mapper}" targetProject="src/main/java" type="XMLMAPPER" />
+		<!-- sql占位符，表示所有的表 -->
+		<table schema="application" tableName="%" delimitIdentifiers="true" delimitAllColumns="true">
+			<property name="rootClass" value="com.tk.bean.BaseEntity"/>
+			<ignoreColumn column="id" />
+		</table>
+        
+	</context>
+</generatorConfiguration>

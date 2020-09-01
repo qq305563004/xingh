@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>添加角色</title>
+<!-- import Vue.js -->
+<script src="//vuejs.org/js/vue.min.js"></script>
+<!-- import stylesheet -->
+<link rel="stylesheet"
+	href="//unpkg.com/view-design/dist/styles/iview.css">
+<!-- import iView -->
+<script src="//unpkg.com/view-design/dist/iview.min.js"></script>
+
+<!-- 公共方法 -->
+<script src="../js/comm.js"></script>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+</head>
+<body>
+	<div id="app">
+		<Input v-model="rolename" placeholder="请输入角色名称..."
+			style="width: 300px" />
+		<Tree ref="tree" :data="treeData" show-checkbox></Tree>
+		<Button type="primary" @click="saveRoleAdd">添加</Button>
+	</div>
+	<script type="text/javascript">
+	var App = new Vue({
+		el : '#app',
+		data : {
+			rolename:'',
+			treeData:[]
+		},
+		methods:{
+			saveRoleAdd(){
+				let selectedNodes = App.$refs.tree.getCheckedNodes();
+				let res = treeDataSubFormat(selectedNodes,App.treeData);
+				$.ajax({
+				    method: "POST",
+				    url: "/role/add",
+				    contentType: 'application/json',
+				    data:JSON.stringify({"rolename":this.rolename,"permissionList":res}),
+				    success: function(data) {
+				    	if(data.status==0){
+				    		App.$Message.success('添加成功!');
+				    	}
+				   }
+				});
+			},
+			getTreeData(){
+				$.post("/permission/listAll",function(data){	
+					App.treeData = App.treeDataFormat(data.data);
+				});
+			},
+			treeDataFormat(data) {
+				if (!data) return ''
+				  data.map(item => {
+				    if (item.level === 1) {
+				      item.expand = true;
+				    }
+				    if (item.children && item.selected) {
+				      App.treeDataFormat(item.children)
+				    } else {
+				      item.checked = item.selected === false ? false : true;
+				    }
+				  })
+				  return data;
+			}
+        },
+        created(){
+        	this.getTreeData();
+        }
+	})
+	</script>
+</body>
+</html>

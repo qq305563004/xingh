@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tk.mapper.RolepermissionMapper">
+  <resultMap id="BaseResultMap" type="com.tk.bean.Rolepermission">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="roleid" jdbcType="INTEGER" property="roleid" />
+    <result column="permissionid" jdbcType="INTEGER" property="permissionid" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createperson" jdbcType="VARCHAR" property="createperson" />
+  </resultMap>
+  
+  <select id="findByRolid" resultType="com.tk.bean.Rolepermission">
+  	SELECT rp.* FROM rolepermission rp LEFT JOIN role r ON rp.roleid = r.id WHERE r.id = #{id}
+  </select>
+</mapper>

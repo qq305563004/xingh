@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tk.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.tk.bean.Permission">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="parentid" jdbcType="INTEGER" property="parentid" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="mark" jdbcType="VARCHAR" property="mark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="type" jdbcType="BIT" property="type" />
+    <result column="action" jdbcType="VARCHAR" property="action" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createperson" jdbcType="VARCHAR" property="createperson" />
+  </resultMap>
+  
+  <select id="findPermissionByName" resultType="com.tk.bean.Permission">
+  	SELECT
+  		p.*
+	FROM
+  		permission p
+  	LEFT JOIN rolepermission rp
+    	ON p.id = rp.permissionid
+  	LEFT JOIN userrole ur
+    	ON ur.roleid = rp.roleid
+  	LEFT JOIN USER u
+    	ON u.id = ur.userid
+	WHERE u.name = #{name}
+  </select>
+  
+  <select id="findPermissionByRoleId" resultType="com.tk.bean.Permission">
+  	SELECT
+  		p.*
+	FROM
+  		permission p
+  	LEFT JOIN rolepermission rp
+    	ON p.id = rp.permissionid
+    <if test="roleid != null and roleid != ''">
+    WHERE rp.roleid = #{roleid}	
+    </if>	
+	
+  </select>
+  
+  <select id="findByStatusAndType" resultType="com.tk.bean.Permission">
+  	select * from permission where status = #{status} and type = #{type}
+  </select>
+  
+    
+  <select id="findByPermissionid" resultType="com.tk.bean.Rolepermission">
+  	select * from rolepermission where roleid = #{roleid}
+  </select>
+</mapper>

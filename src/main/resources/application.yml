@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  #压缩请求数据大小
+  compression:
+    enabled: true
+    min-response-size: 2048
+    mime-types:  #List
+      - application/json
+      - application/octet-stream
+      - application/javascript
+      - image/png
+      - image/jpeg
+      - image/jpg
+      - text/html
+      - text/css
+
+spring:
+ main:
+    allow-bean-definition-overriding: true
+ devtools:
+  restart:
+   exclude: static/**
+   enabled: true
+ thymeleaf:
+  cache: false
+  mode: LEGACYHTML5
+ jackson:
+  serialization:
+    FAIL_ON_EMPTY_BEANS: false
+ flyway: 
+  enabled: true 
+  
+mybatis:
+  mapperLocations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.tk.bean
+
+mapper:
+  mappers:
+    - com.tk.utils.MyMapper
+  not-empty: false
+  identity: MYSQL
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: false
+    supportMethodsArguments: true
+    params: count=countSql
+    returnPageInfo: check

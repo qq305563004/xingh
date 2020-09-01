@@ -1,0 +1,14 @@
+准备步骤:
+	1:执行(数据库信息自己修改)
+	flyway:migrate -Dflyway.url=jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC -Dflyway.user=root -Dflyway.password=123456
+	
+	2.执行完后数据库检查表是否创建
+	
+	3.执行
+	mybatis-generator:generate
+	
+	4.检查基础文件是否生成
+
+    5.appliction.sh是部署启动文件，
+           启动方式 ./appliction.sh start
+          关闭方式 ./appliction.sh stop
